@@ -1,7 +1,6 @@
 {
-  "name": "Boltz",
+  "name": "YieldManager",
   "version": "0.1.0",
-  "homepage": "https://boltz.dexignzone.com/react/demo",
   "private": true,
   "dependencies": {
     "@acala-network/contracts": "^4.2.0",
