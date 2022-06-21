@@ -2,43 +2,28 @@ import React, { useContext } from "react";
 
 /// React router dom
 import {  Switch, Route } from "react-router-dom";
-  
 /// Css 
 import "./index.css";
 import "./chart.css";
 import "./step.css";
-
 /// Layout
 import Header from "./layouts/nav/Header";
 import NAV_NavHade from "./layouts/nav/NavHader";
 import NAV_SideBar from "./layouts/nav/SideBar";
 import Footer from "./layouts/Footer";
+import { ThemeContext } from "../context/ThemeContext";  
 /// Dashboard
-import DashboardDark from "./components/Dashboard/DashboardDark";
 import DEX from "./components/Dashboard/DEX";
 import Portofolio from "./components/Dashboard/Portofolio";
 
-import InitiateWill from "./components/Dashboard/InitiateWill";
-import ManageWill from "./components/Dashboard/ManageWill";
-
-
-
-import MyWallet from "./components/Dashboard/MyWallet";
-import Beneficiaries from "./components/Dashboard/Beneficiaries";
-
-
-
-import { ThemeContext } from "../context/ThemeContext";  
 
 const Markup = ( { 
-  treasuryBalances, dotStakedBalance, rewardPerBlock, stakeEpochNumber,
-
-  schedulerTrigger, willAdmin, ntt54Will_address, currentAccount, provider, wallet, ntt54Will, setupSpecs, portfolio, oracleData, blockChainSpecs, blockHeader, blockTimestamp, evm_api_state, accountList, selectedAccountName,
-  acaBalance, ausdBalance,  dotBalance,
-  str1Balance, str2Balance, str3Balance,
-  stg1AcaBalance,  stg2AcaBalance,  stg3AcaBalance,  
-  stg1DOTBalance,  stg2DOTBalance, stg3DOTBalance,
-
+  currentAccount, provider, wallet, setupSpecs, portfolio, oracleData, blockHeader, evm_api_state, accountList, selectedAccountName,
+  treasuryBalances, dotStakedBalance, rewardPerBlock, stakeEpochNumber,  stakeContractState, stakeContractACABalance,
+  acaBalance, ausdBalance,  dotBalance, str1Balance, str2Balance, str3Balance,
+  stg1AusdBalance,  stg2AusdBalance,  stg3AusdBalance,  
+  stg1DOTBalance,  stg2DOTBalance, stg3DOTBalance, stg1ACABalance, stg2ACABalance, stg3ACABalance,
+  getAllBalanceForAccount,
 }) => {
 
   const { menuToggle } = useContext(ThemeContext);
@@ -62,23 +47,14 @@ const Markup = ( {
             style={{ minHeight: window.screen.height - 60 }}
           >
             <Switch>
-              {/* <Route exact path='/'> <MyWallet currentAccount={currentAccount} provider={provider} wallet={wallet} ntt54Will={ntt54Will}  setupSpecs={setupSpecs} portfolio={portfolio} blockHeader={blockHeader} accountList={accountList}/> </Route> */}
-              {/* <Route exact path='/RegisterAccounts'> <MyWallet currentAccount={currentAccount} provider={provider} wallet={wallet} ntt54Will={ntt54Will}  setupSpecs={setupSpecs} portfolio={portfolio} blockHeader={blockHeader} accountList={accountList}/> </Route> */}
-
-              {/* <Route exact path='/RegisterBeneficiaries'> <Beneficiaries currentAccount={currentAccount} provider={provider} wallet={wallet} ntt54Will={ntt54Will}  setupSpecs={setupSpecs} portfolio={portfolio} blockHeader={blockHeader} accountList={accountList}/> </Route> */}
-
-              {/* <Route exact path='/'> <DashboardDark setupSpecs={setupSpecs} oracleData={oracleData} blockHeader={blockHeader} accountList={accountList} /> </Route> */}
-              {/* <Route exact path='/dashboard-dark'> <DashboardDark setupSpecs={setupSpecs} oracleData={oracleData} blockHeader={blockHeader} accountList={accountList} /> </Route> */}
-
-              {/* <Route exact path='/initate-will'> <InitiateWill willAdmin={willAdmin} ntt54Will_address={ntt54Will_address} currentAccount={currentAccount} provider={provider} wallet={wallet} ntt54Will={ntt54Will} setupSpecs={setupSpecs} portfolio={portfolio} blockHeader={blockHeader} accountList={accountList}/> </Route> */}
-              {/* <Route exact path='/manage-will'> <ManageWill schedulerTrigger={schedulerTrigger} willAdmin={willAdmin} ntt54Will_address={ntt54Will_address} currentAccount={currentAccount} provider={provider} wallet={wallet} ntt54Will={ntt54Will} setupSpecs={setupSpecs} portfolio={portfolio} blockHeader={blockHeader} accountList={accountList}/> </Route> */}
-
               <Route exact path='/'> 
                   <DEX  currentAccount={currentAccount} setupSpecs={setupSpecs} portfolio={portfolio} oracleData={oracleData} blockHeader={blockHeader} accountList={accountList} 
                         acaBalance={acaBalance}  ausdBalance={ausdBalance}  dotBalance={dotBalance} 
                         str1Balance={str1Balance}  str2Balance={str2Balance}  str3Balance={str3Balance}  
-                        stg1AcaBalance={stg1AcaBalance}  stg2AcaBalance={stg2AcaBalance}  stg3AcaBalance={stg3AcaBalance}  
+                        stg1AusdBalance={stg1AusdBalance}  stg2AusdBalance={stg2AusdBalance}  stg3AusdBalance={stg3AusdBalance} 
                         stg1DOTBalance={stg1DOTBalance}  stg2DOTBalance={stg2DOTBalance} stg3DOTBalance={stg3DOTBalance}
+                        stg1ACABalance={stg1ACABalance} stg2ACABalance={stg2ACABalance} stg3ACABalance={stg3ACABalance}
+                        getAllBalanceForAccount={getAllBalanceForAccount}
                   /> 
               </Route>
 
@@ -86,17 +62,21 @@ const Markup = ( {
                   <DEX  currentAccount={currentAccount} setupSpecs={setupSpecs} portfolio={portfolio} oracleData={oracleData} blockHeader={blockHeader} accountList={accountList} 
                         acaBalance={acaBalance}  ausdBalance={ausdBalance}  dotBalance={dotBalance} 
                         str1Balance={str1Balance}  str2Balance={str2Balance}  str3Balance={str3Balance}  
-                        stg1AcaBalance={stg1AcaBalance}  stg2AcaBalance={stg2AcaBalance}  stg3AcaBalance={stg3AcaBalance}  
+                        stg1AusdBalance={stg1AusdBalance}  stg2AusdBalance={stg2AusdBalance}  stg3AusdBalance={stg3AusdBalance}  
                         stg1DOTBalance={stg1DOTBalance}  stg2DOTBalance={stg2DOTBalance} stg3DOTBalance={stg3DOTBalance}
+                        stg1ACABalance={stg1ACABalance} stg2ACABalance={stg2ACABalance} stg3ACABalance={stg3ACABalance}
+                        getAllBalanceForAccount={getAllBalanceForAccount}
                   /> 
               </Route>
 
               <Route exact path='/portofolio'> 
                   <Portofolio 
-                        willAdmin={willAdmin} ntt54Will_address={ntt54Will_address} currentAccount={currentAccount} provider={provider} wallet={wallet} ntt54Will={ntt54Will} setupSpecs={setupSpecs} portfolio={portfolio} blockHeader={blockHeader} accountList={accountList}
+                        currentAccount={currentAccount} provider={provider} wallet={wallet} 
+                        setupSpecs={setupSpecs} portfolio={portfolio} blockHeader={blockHeader} accountList={accountList}
                         treasuryBalances={treasuryBalances} dotStakedBalance={dotStakedBalance} rewardPerBlock={rewardPerBlock} stakeEpochNumber={stakeEpochNumber}
-                        
-                        /> 
+                        stakeContractState={stakeContractState} stakeContractACABalance={stakeContractACABalance}
+                        getAllBalanceForAccount={getAllBalanceForAccount}
+                  /> 
               </Route>
 
             </Switch> 

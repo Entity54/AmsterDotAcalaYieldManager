@@ -1,36 +1,13 @@
 import React,{useState,useEffect} from 'react';
+import {Dropdown} from 'react-bootstrap';
  
-import pha100 from '../../../../icons/crypto/pha100.png';
-import bsx100 from '../../../../icons/crypto/bsx100.png';
-import kar100 from '../../../../icons/crypto/kar100.png';
 import acadot100 from '../../../../icons/crypto/acadot100.png';
 import stakeddot100 from '../../../../icons/crypto/stakeddot100.png';
 
-import {Dropdown} from 'react-bootstrap';
 
-import { 
-  depositToTreasuryStakingContract, updateTreasuryRewardPerEpoch, withdrawFromTreasury, getSmartContractFeesBalances, 
-  getAccount_ACA_Balance, getAccount_AUSD_Balance, getAccount_DOT_Balance, 
-  // getAccount_STR1_Balance, getAccount_STR2_Balance, getAccount_STR3_Balance
-} from '../../../../ntt54_accounts.js';   
-
-
-const UI1 = ({
-  currentAccount, 
-  // getAllBalanceForAccount, 
-  dotBalance, str1Balance, str2Balance, str3Balance,
-  set_AmountToStake,
-
-  // resetTargetAccount, originChainSelected, destinationChainSelected, selectedTokenfunction, selectedDestinationChainfunction, selectedOriginChainfunction, resetState, 
-}) => {
+const UI1 = ({ dotBalance, set_AmountToStake, }) => {
 	 
   const [amountOfDot , setAmountOfDot]  = useState("");  
-
-  
-
-  // useEffect(() => {
-	// 	if (currentAccount) getAllBalanceForAccount();
-	// }, [currentAccount]);
 
 
 	return(
@@ -129,16 +106,16 @@ const UI1 = ({
               <div className="row">
                 <div className="col-6 pt-3 pb-3 border-right">
                   <h3 className="mb-3"><span style={{color:"#6e757c"}}>STAKE LP TOKENS</span></h3>
-                  <label class="switch">
+                  <label className="switch">
                     <input type="checkbox"/>
-                    <span class="slider round"></span>
+                    <span className="slider round"></span>
                   </label>
                 </div>
                 <div className="col-6 pt-3 pb-3">
                   <h3 className="mb-3 text-primary"><span style={{color:"#6e757c"}}>MANAGE YIELD</span></h3>
-                  <label class="switch">
+                  <label className="switch">
                     <input type="checkbox"/>
-                    <span class="slider round"></span>
+                    <span className="slider round"></span>
                   </label>
                 </div>
               </div>
@@ -234,9 +211,9 @@ const UI1 = ({
           <div className="row">
             <div className="col-12 pt-3">
               <h3 className="mb-3 text-primary"><span style={{color:"#6e757c"}}>MANAGE YIELD</span></h3>
-              <label class="switch">
+              <label className="switch">
                 <input type="checkbox"/>
-                <span class="slider round"></span>
+                <span className="slider round"></span>
               </label>
             </div>
           </div>

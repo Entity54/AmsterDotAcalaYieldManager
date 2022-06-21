@@ -174,7 +174,7 @@ const SideBar = () => {
             <Link className="ai-icon" to="/RegisterAccounts"><i className="flaticon-025-dashboard"></i> <span className="nav-text">Register Accounts</span></Link>
           </li> */}
           <li className={`${charts.includes(path) ? "mm-active" : ""}`}>
-            <Link className="ai-icon" to="/portofolio"><i className="fa fa-briefcase" aria-hidden="true"></i> <span className="nav-text">Polkaddot Depository</span></Link>
+            <Link className="ai-icon" to="/portofolio"><i className="fa fa-briefcase" aria-hidden="true"></i> <span className="nav-text">Polkadot Depository</span></Link>
           </li>
           {/* <li className={`${charts.includes(path) ? "mm-active" : ""}`}>
             <Link className="ai-icon" to="/RegisterBeneficiaries"><i className="flaticon-025-dashboard"></i> <span className="nav-text">Register Beneficiaries</span></Link>

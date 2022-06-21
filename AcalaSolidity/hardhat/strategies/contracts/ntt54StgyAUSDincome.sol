@@ -11,7 +11,9 @@ import "@acala-network/contracts/utils/Address.sol";
 
 contract ntt54StgyAUSDincome is LpStg1, ADDRESS {
 
-    uint constant public SC_BALANCE_FEES = 2 * 10 ** 12; //sc must always have this ACA balance to be able to run scheduler
+    uint constant public SC_BALANCE_FEES = 1 * 10 ** 12; //sc must always have this ACA balance to be able to run scheduler
+    uint constant public SC_BALANCE_FEES_THRESHOLD = 2 * 10 ** 12; //if SC ACA balance falls below this level we will top it upto Target Level
+    uint constant public SC_BALANCE_FEES_TARGET = 3 * 10 ** 12; //Target ACA balance for feees for sc
 
     IDEX dex = IDEX(ADDRESS.DEX);
     ISchedule schedule = ISchedule(ADDRESS.Schedule);
@@ -20,7 +22,7 @@ contract ntt54StgyAUSDincome is LpStg1, ADDRESS {
     ERC20 ausd;
     ERC20 aca;
 
-    uint public frequency = 20;   //how frequently will manage proceeds
+    uint public frequency = 5;                 //how frequently will manage proceeds
     bool public managingProceedsState = true;  //allows admin to start/stop manageProceeds
 
     ntt54StakeDOT public LPTstake;
@@ -54,6 +56,7 @@ contract ntt54StgyAUSDincome is LpStg1, ADDRESS {
     }
 
     uint public totalACAavailableBalance = 0; 
+    uint public totalAUSDavailableBalance = 0; 
     uint public totalTargetAssetBalance = 0; 
 
 
@@ -72,7 +75,7 @@ contract ntt54StgyAUSDincome is LpStg1, ADDRESS {
         frequency = _frequency;
     }
 
-    //make sure you tranfer 2 ACA to SC for fees
+    //make sure you tranfer at least 2 ACA to SC for fees. If balance falls below 1 it will not continue
     function transferFeesBalance(uint amount) public {
         aca.transferFrom(msg.sender,address(this),amount);
     }
@@ -206,39 +209,53 @@ contract ntt54StgyAUSDincome is LpStg1, ADDRESS {
 
         if (managingProceedsState)
         {
+                totalAUSDavailableBalance = ausd.balanceOf(address(this));
                 totalACAavailableBalance = aca.balanceOf(address(this));
+
                 uint numTokensdistributed = 0;
 
-                //will always leav 2 ACA for scheduler fees
-                if (userAccounts.length>0 && totalACAavailableBalance > SC_BALANCE_FEES)
+                if (userAccounts.length>0 && totalAUSDavailableBalance>0 && totalACAavailableBalance > SC_BALANCE_FEES)
                 {
-                    totalACAavailableBalance -=SC_BALANCE_FEES;  //ensure sc always has balance of 2 ACA roughly to be able to pay scheduler tx triggers
+                    // totalACAavailableBalance -=SC_BALANCE_FEES;  //ensure sc always has balance of 2 ACA roughly to be able to pay scheduler tx triggers
                     
                     //swap ACA for TargetAsset
                     address[] memory path = new address[](2);
-                    path[0] = ADDRESS.ACA;
-                    path[1] = ADDRESS.AUSD;
-                    uint targetReceivedAmount = dex.getSwapTargetAmount(path, totalACAavailableBalance);
-                    require(dex.swapWithExactSupply(path, totalACAavailableBalance, 1), "Swapping ACA yield for AUSD failed");
+                    path[0] = ADDRESS.AUSD;
+                    path[1] = ADDRESS.ACA;
+                    uint targetReceivedAmount = dex.getSwapTargetAmount(path, totalAUSDavailableBalance);
+                    require(dex.swapWithExactSupply(path, totalAUSDavailableBalance, 1), "Swapping AUSD yield for ACA failed");
                     
-                    totalTargetAssetBalance = targetReceivedAmount;
+                    if (totalACAavailableBalance < SC_BALANCE_FEES_THRESHOLD)
+                    {
+                        uint toppingAmount = SC_BALANCE_FEES_TARGET - totalACAavailableBalance;
+                        //keep some ACA back for SC fees or all of it if the targetReceivedAmount is lower than toppingAmount, so no distribution in this round
+                        totalTargetAssetBalance = targetReceivedAmount > toppingAmount ? targetReceivedAmount - toppingAmount : 0; 
+                    }
+                    else
+                    {
+                        totalTargetAssetBalance = targetReceivedAmount;
+                    }
+
                     epochNumber +=1;
 
-                    for (uint i=0; i<userAccounts.length; i++)
+                    if (totalTargetAssetBalance>0)
                     {
-                        uint rewardAmount;
-                        if (i<userAccounts.length-1)
+                        for (uint i=0; i<userAccounts.length; i++)
                         {
-                            rewardAmount =  ( balanceOf(userAccounts[i]) * totalTargetAssetBalance ) / totalSupply() ;
-                            numTokensdistributed +=rewardAmount;
-                        }
-                        else
-                        {
-                            rewardAmount = totalTargetAssetBalance - numTokensdistributed;
-                        }
+                            uint rewardAmount;
+                            if (i<userAccounts.length-1)
+                            {
+                                rewardAmount =  ( balanceOf(userAccounts[i]) * totalTargetAssetBalance ) / totalSupply() ;
+                                numTokensdistributed +=rewardAmount;
+                            }
+                            else
+                            {
+                                rewardAmount = totalTargetAssetBalance - numTokensdistributed;
+                            }
 
-                        //transfer to users wallet
-                        ausd.transfer(userAccounts[i], rewardAmount);
+                            //transfer to users wallet
+                            aca.transfer(userAccounts[i], rewardAmount);
+                        }
                     }
 
                 }

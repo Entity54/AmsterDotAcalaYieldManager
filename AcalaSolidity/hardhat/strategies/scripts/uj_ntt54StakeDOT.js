@@ -115,89 +115,8 @@ async function main() {
     // const dex_reward_rate = await incentives.getDexRewardRate(ACA);
     // console.log(`DEX ACA_DOT Pool dex_reward_rate: `,dex_reward_rate);
 
-  
 
 
-
-
-
-
-
-
-
-
-
-
-
-  
-  // const instance = new Contract(scAddress, ntt54WillArtifact.abi, initiator);
-  // console.log("ntt54Will is deployed at address:", instance.address);
-
-
-  // const willAdmin = await instance.willAdmin();
-  // let willState = await instance.willState();
-  // console.log(`willAdmin: ${willAdmin} willState:${willState}`);
-  
-  // console.log("setting willState");
-  // let setWillState = await instance.setWillState(false);
-  // willState = await instance.willState();
-  // console.log(`willAdmin: ${willAdmin} willState:${willState}`);
-
-
-  // function setWill(string memory message, uint _trigger_dt1, 
-    // uint _trigger_dt2, uint _trigger_dt3, uint _lastCall_dt4) external returns(bool){
-
-  //********* */  
-  // let tx = await instance.setWill_2("Hello29", 10, 5, 4, 3);
-  // let tx = await instance.setWill("Helo 54", 10, 5, 4, 3);
-
-
-
-
-
-  // let tx2 = await instance.setWillGeneralMessage("Hello folks. Thats is all. Enjoyed Substrate and Solidity");
-  // console.log(`General Message has now been stored. Moving on to setWill`);
-
-  // let tx = await instance.setWill(10, 5, 4, 3);
-
-  // console.log("setting willState");
-
-  // let setWillState = await instance.setWillState(true);
-  // willState = await instance.willState();
-  // console.log(`willAdmin: ${willAdmin} willState:${willState}`);
-  //********* */  
-
-
-  // console.log(`setWill is run`);
-
-  // let willIssueBlockNum = await instance.willIssueBlockNum();
-  // console.log(`willIssueBlockNum: ${willIssueBlockNum} is run`);
-  // let willIssueTimeStamp = await instance.willIssueTimeStamp();
-  // console.log(`willIssueTimeStamp: ${willIssueTimeStamp} is run`);
-
-  // let willGeneralMessage = await instance.willGeneralMessage();
-  // console.log(`willGeneralMessage: ${willGeneralMessage} is run`);
-
-  // let trigger_dt1 = await instance.trigger_dt1();
-  // console.log(`trigger_dt1: ${trigger_dt1.toString()} is run`);
-
-  // let trigger_dt2 = await instance.trigger_dt2();
-  // console.log(`trigger_dt2: ${trigger_dt2.toString()} is run`);
-
-  // let trigger_dt3 = await instance.trigger_dt3();
-  // console.log(`trigger_dt3: ${trigger_dt3.toString()} is run`);
-
-  // let lastCall_dt4 = await instance.lastCall_dt4();
-  // console.log(`lastCall_dt4: ${lastCall_dt4.toString()} is run`);
-
-  // let triggerPoint1 = await instance.triggerPoint1();
-  // console.log(`triggerPoint1: ${triggerPoint1.toString()} is run`);
-
-  // let triggerPoint2 = await instance.triggerPoint2();
-  // console.log(`triggerPoint2: ${triggerPoint2.toString()} is run`);
-
-  // let triggerPoint3 = await instance.triggerPoint3();
-  // console.log(`triggerPoint3: ${triggerPoint3.toString()} is run`);
 
   
 }

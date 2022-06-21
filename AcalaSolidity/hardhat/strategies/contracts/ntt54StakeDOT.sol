@@ -12,12 +12,14 @@ contract ntt54StakeDOT is LpStkDot, ADDRESS {
     ISchedule schedule = ISchedule(ADDRESS.Schedule);
     
     ERC20 dot;
+    ERC20 ausd;
     ERC20 aca;
 
     mapping(address => uint) public treasuryBalances;   //e.g. ACA has balance XYZ
     uint public REWARD_PER_BLOCK = 1 * 10 ** 12;
     uint constant public mantissa = 1e12;
     uint public epochNumber = 0;
+    bool public distributionPermitted = true;
     
     address public admin;             
 
@@ -39,6 +41,7 @@ contract ntt54StakeDOT is LpStkDot, ADDRESS {
     constructor() {
         admin = msg.sender;
         dot = ERC20(ADDRESS.DOT);
+        ausd = ERC20(ADDRESS.AUSD);
         aca = ERC20(ADDRESS.ACA);
     }
 
@@ -52,21 +55,25 @@ contract ntt54StakeDOT is LpStkDot, ADDRESS {
     }
 
     function depositToTreasury(uint amount) onlyAdmin external {
-        aca.transferFrom(msg.sender,address(this),amount);
-        treasuryBalances[ADDRESS.ACA] +=amount;
+        ausd.transferFrom(msg.sender,address(this),amount);
+        treasuryBalances[ADDRESS.AUSD] +=amount;
     }
 
     function withdrawFromTreasury(uint amount) onlyAdmin external {
-        treasuryBalances[ADDRESS.ACA] -=amount;
-        aca.transfer(msg.sender, amount);
+        treasuryBalances[ADDRESS.AUSD] -=amount;
+        ausd.transfer(msg.sender, amount);
     }
 
     function startDistributing() onlyAdmin external {
         distributeRewards();
+        distributionPermitted = true;
+    }
+    function stopDistributing() onlyAdmin external {
+        distributionPermitted = false;
     }
 
     function distributeRewards() onlyAdmiOrStakerSC public {
-        if ( aca.balanceOf(address(this)) > REWARD_PER_BLOCK )
+        if (distributionPermitted && ausd.balanceOf(address(this)) >= REWARD_PER_BLOCK )
         {
 
             if (userAccounts.length>0)
@@ -76,10 +83,10 @@ contract ntt54StakeDOT is LpStkDot, ADDRESS {
                 for (uint i=0; i<userAccounts.length; i++)
                 {
                     uint rewardAmount =  ( balanceOf(userAccounts[i]) * REWARD_PER_BLOCK ) / totalSupply() ;
-                    aca.transfer(userAccounts[i], rewardAmount);
+                    ausd.transfer(userAccounts[i], rewardAmount);
                 }
 
-                treasuryBalances[ADDRESS.ACA] -=REWARD_PER_BLOCK ;    
+                treasuryBalances[ADDRESS.AUSD] -=REWARD_PER_BLOCK ;    
 
             }
 
